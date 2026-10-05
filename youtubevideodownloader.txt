@@ -1,0 +1,75 @@
+P='normal'
+R='START DOWNLOAD'
+K='end'
+O='disabled'
+N='#CCCCCC'
+M='#555555'
+L='#333333'
+J='on'
+I=False
+H='bold'
+F=True
+E='#000000'
+D='#FFFFFF'
+import os as B,sys,threading as Q,subprocess as G,customtkinter as C
+from tkinter import messagebox as S,filedialog as T
+C.set_appearance_mode('Dark')
+class U(C.CTkToplevel):
+	def __init__(A,parent,browsers):F=browsers;B=parent;super().__init__(B);A.title('Select Browser');A.geometry('350x200');A.resizable(I,I);A.configure(fg_color=E);A.selected_browser=None;A.transient(B);A.grab_set();G=C.CTkLabel(A,text='Multiple browsers detected.\nWhich one has your YouTube account?',font=C.CTkFont(weight=H),text_color=D);G.pack(pady=(20,10));A.browser_var=C.StringVar(value=F[0]);A.menu=C.CTkOptionMenu(A,values=F,variable=A.browser_var,fg_color=E,button_color=L,button_hover_color=M,text_color=D);A.menu.pack(pady=10);J=C.CTkButton(A,text='Confirm',command=A.confirm,fg_color=D,text_color=E,hover_color=N);J.pack(pady=(15,10))
+	def confirm(A):A.selected_browser=A.browser_var.get();A.destroy()
+class A(C.CTk):
+	def __init__(A):W='Best Quality (Default)';V='both';Q='left';P='transparent';K='off';G='x';super().__init__();A.title('YouTube Downloader');S,T=450,600;X=A.winfo_screenwidth();Y=A.winfo_screenheight();A.geometry(f"{S}x{T}+{int(X/2-S/2)}+{int(Y/2-T/2)}");A.resizable(I,I);A.configure(fg_color=E);A.main_frame=C.CTkFrame(A,fg_color=P);A.main_frame.pack(fill=V,expand=F,padx=30,pady=15);A.title_label=C.CTkLabel(A.main_frame,text='YOUTUBE DOWNLOADER',font=C.CTkFont(size=22,weight=H),text_color=D);A.title_label.pack(pady=(0,20));A.url_entry=C.CTkEntry(A.main_frame,placeholder_text='YouTube URL...',height=40,font=C.CTkFont(size=13),fg_color=E,border_color=D,text_color=D);A.url_entry.pack(fill=G,pady=(0,15));A.qualities={W:'bv*+ba/b','2160p (4K Max)':'bestvideo[height<=2160]+bestaudio/best[height<=2160]','1440p (2K Max)':'bestvideo[height<=1440]+bestaudio/best[height<=1440]','1080p Max':'bestvideo[height<=1080]+bestaudio/best[height<=1080]','720p Max':'bestvideo[height<=720]+bestaudio/best[height<=720]','480p Max':'bestvideo[height<=480]+bestaudio/best[height<=480]','360p Max':'bestvideo[height<=360]+bestaudio/best[height<=360]'};A.quality_menu=C.CTkOptionMenu(A.main_frame,values=list(A.qualities.keys()),height=40,font=C.CTkFont(size=13),fg_color=E,button_color=L,button_hover_color=M,text_color=D);A.quality_menu.set(W);A.quality_menu.pack(fill=G,pady=(0,15));A.dir_frame=C.CTkFrame(A.main_frame,fg_color=P);A.dir_frame.pack(fill=G,pady=(0,15));A.dir_entry=C.CTkEntry(A.dir_frame,height=40,font=C.CTkFont(size=12),fg_color=E,border_color=D,text_color=D);A.dir_entry.insert(0,B.getcwd());A.dir_entry.pack(side=Q,fill=G,expand=F,padx=(0,10));A.browse_btn=C.CTkButton(A.dir_frame,text='...',width=40,height=40,command=A.browse_directory,font=C.CTkFont(size=14,weight=H),fg_color=D,text_color=E,hover_color=N);A.browse_btn.pack(side='right');A.chk_frame=C.CTkFrame(A.main_frame,fg_color=P);A.chk_frame.pack(fill=G,pady=(5,20));U={'font':C.CTkFont(size=12,weight=H),'text_color':D,'fg_color':L,'border_color':D,'checkmark_color':D,'hover_color':M};A.sub_var=C.StringVar(value=K);A.sub_chk=C.CTkCheckBox(A.chk_frame,text='Download Subs',variable=A.sub_var,onvalue=J,offvalue=K,**U);A.sub_chk.pack(side=Q,expand=F);A.thumb_var=C.StringVar(value=K);A.thumb_chk=C.CTkCheckBox(A.chk_frame,text='Embed Thumbnail',variable=A.thumb_var,onvalue=J,offvalue=K,**U);A.thumb_chk.pack(side=Q,expand=F);A.download_btn=C.CTkButton(A.main_frame,text=R,command=A.start_download_thread,height=45,font=C.CTkFont(size=15,weight=H),fg_color=D,text_color=E,hover_color=N);A.download_btn.pack(fill=G,pady=(0,15));A.console_box=C.CTkTextbox(A.main_frame,height=130,font=C.CTkFont(family='Consolas',size=11),fg_color=E,text_color=D,border_color=D,border_width=1);A.console_box.pack(fill=V,expand=F);A.console_box.insert('0.0','Ready...\n');A.console_box.configure(state=O)
+	def detect_browsers(T):
+		S='.config';R='Profiles';Q='Firefox';P='Brave-Browser';O='edge';N='Chrome';M='Google';K='brave';J='BraveSoftware';I='chrome';H='User Data';F='Application Support';E='firefox';D='Library';A=[]
+		if sys.platform=='win32':
+			L,G=B.environ.get('APPDATA',''),B.environ.get('LOCALAPPDATA','')
+			if B.path.exists(B.path.join(G,M,N,H)):A.append(I)
+			if B.path.exists(B.path.join(G,'Microsoft','Edge',H)):A.append(O)
+			if B.path.exists(B.path.join(G,J,P,H)):A.append(K)
+			if B.path.exists(B.path.join(L,'Opera Software','Opera Stable')):A.append('opera')
+			if B.path.exists(B.path.join(L,'Mozilla',Q,R)):A.append(E)
+		elif sys.platform=='darwin':
+			C=B.path.expanduser('~')
+			if B.path.exists(B.path.join(C,D,F,M,N)):A.append(I)
+			if B.path.exists(B.path.join(C,D,F,'Microsoft Edge')):A.append(O)
+			if B.path.exists(B.path.join(C,D,F,J,P)):A.append(K)
+			if B.path.exists(B.path.join(C,D,F,Q,R)):A.append(E)
+			if B.path.exists(B.path.join(C,D,'Safari')):A.append('safari')
+		else:
+			C=B.path.expanduser('~')
+			if B.path.exists(B.path.join(C,S,'google-chrome')):A.append(I)
+			if B.path.exists(B.path.join(C,S,J)):A.append(K)
+			if B.path.exists(B.path.join(C,'.mozilla',E)):A.append(E)
+		return A
+	def browse_directory(A):
+		B=T.askdirectory()
+		if B:A.dir_entry.delete(0,K);A.dir_entry.insert(0,B)
+	def log(A,message):
+		def B():A.console_box.configure(state=P);A.console_box.insert(K,message+'\n');A.console_box.see(K);A.console_box.configure(state=O)
+		A.after(0,B)
+	def start_download_thread(A):
+		D=A.url_entry.get().strip()
+		if not D:S.showerror('Error','Please enter a valid YouTube URL.');return
+		B=A.detect_browsers();C=None
+		if len(B)>1:
+			E=U(A,B);A.wait_window(E);C=E.selected_browser
+			if not C:A.log('[INFO] Download cancelled.');return
+		elif len(B)==1:C=B[0]
+		A.download_btn.configure(state=O,text='DOWNLOADING...');Q.Thread(target=A.run_ytdlp,args=(D,C),daemon=F).start()
+	def run_ytdlp(A,url,browser):
+		E=browser;I=A.qualities[A.quality_menu.get()];K=A.dir_entry.get().strip()or B.getcwd();L=B.path.join(K,'%(title)s.%(ext)s');C=['yt-dlp','--remote-components','ejs:github','-f',I,'--merge-output-format','mp4','-S','ext:mp4:m4a','-o',L]
+		if E:A.log(f"[INFO] Using cookies from: {E}");C.extend(['--cookies-from-browser',E])
+		if A.sub_var.get()==J:C.extend(['--write-subs','--write-auto-subs','--sub-langs','en','--embed-subs'])
+		if A.thumb_var.get()==J:C.append('--embed-thumbnail')
+		C.append(url);A.log(f"\n[INFO] Executing...")
+		try:
+			D=G.Popen(C,stdout=G.PIPE,stderr=G.STDOUT,text=F,encoding='utf-8',errors='replace')
+			for M in D.stdout:
+				H=M.strip()
+				if H:A.log(H)
+			D.wait()
+			if D.returncode==0:A.log('[SUCCESS] Download completed!')
+			else:A.log(f"[ERROR] Process error {D.returncode}")
+		except Exception as N:A.log(f"[EXCEPTION] {str(N)}")
+		finally:A.after(0,lambda:A.download_btn.configure(state=P,text=R))
+if __name__=='__main__':V=A();V.mainloop()
