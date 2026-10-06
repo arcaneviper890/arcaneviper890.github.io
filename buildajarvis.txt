@@ -1,3 +1,0 @@
-I've switched distros since then, so I don't really have the source code anymore, and I honestly don't feel like going through the hassle of decompiling the EXE. Sorry about that.
-
-Also, I was way too lazy to actually write the help text for the help button myself. I don't even know what to call it right now, I'm too tired. Either way, I had GPT write most of that and didn't exactly look too closely at what it came up with, so if there's some random bullshit in there, that's probably why. My bad.
